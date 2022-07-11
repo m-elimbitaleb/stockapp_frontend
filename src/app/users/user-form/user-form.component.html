@@ -1,0 +1,135 @@
+<!--
+  ~ Copyright (c) 2021. stockapp.
+  ~ Proprietary source code; any copy or modification is prohibited.
+  ~
+  ~ @author Moulaye Abderrahmane <moolsbytheway@gmail.com>
+  ~
+  -->
+
+<div>
+  <h5 class="title mb-3">
+    <span *ngIf="!isEditMode">Ajouter un utilisateur</span>
+    <span *ngIf="isEditMode">Modifier l'utilisateur: {{user.username}}</span>
+  </h5>
+  <form [formGroup]="userForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control"
+                 formControlName="email"
+                 placeholder="Email address">
+          <small class="text-danger" *ngIf="form['email'].dirty && form['email'].errors">
+            Email invalid
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" class="form-control"
+                 formControlName="username"
+                 placeholder="Username">
+          <small class="text-danger" *ngIf="form['username'].dirty
+               && form['username'].errors">
+            Username required
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" class="form-control"
+                 formControlName="firstName"
+                 placeholder="First name">
+          <small class="text-danger" *ngIf="form['firstName'].dirty
+               && form['firstName'].errors">
+            First name is required
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" class="form-control"
+                 formControlName="lastName"
+                 placeholder="Last name">
+          <small class="text-danger" *ngIf="form['lastName'].dirty
+               && form['lastName'].errors">
+            Last name is required
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" class="form-control"
+                 formControlName="phone"
+                 placeholder="Téléphone exemple: +22240009900">
+          <small class="text-danger" *ngIf="form['phone'].dirty
+               && form['phone'].errors">
+            Phone is required
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Role</label>
+          <select formControlName="role" class="form-control">
+            <option *ngFor="let role of roles"
+                    [ngValue]="role">{{role}}</option>
+          </select>
+          <small class="text-danger" *ngIf="form['role'].dirty && form['role'].errors">
+            Role is required
+          </small>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="!isEditMode">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control"
+                   formControlName="password"
+                   placeholder="Password"/>
+            <small class="text-danger" *ngIf="form['password'].dirty
+               && form['password'].errors">
+              Password minimum length is 8
+            </small>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Password confirmation</label>
+            <input type="password" class="form-control"
+                   [formControl]="passwordConfirmation"
+                   placeholder="Password confirmation">
+            <small class="text-danger" *ngIf="passwordConfirmation.dirty
+               && passwordConfirmation.errors">
+              Password confirmation minimum length is 8
+            </small>
+            <small class="text-danger" *ngIf="form['password'].dirty
+              && passwordConfirmation.dirty
+              && !passwordMatches">
+              Passwords doesn't match
+            </small>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="d-flex justify-content-end">
+      <input type="reset" class="btn btn-secondary" value="Cancel" (click)="onCancel()"/>
+      <button
+        (click)="onSubmit()"
+        [disabled]="userForm.invalid || !passwordMatches"
+        class="btn btn-primary">Save
+      </button>
+    </div>
+  </form>
+</div>

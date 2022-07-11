@@ -1,0 +1,16 @@
+
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+
+  i {
+    margin-left: 5px;
+    cursor: pointer;
+
+    &.fa-user-plus {
+      color: forestgreen;
+    }
+  }
+}
+

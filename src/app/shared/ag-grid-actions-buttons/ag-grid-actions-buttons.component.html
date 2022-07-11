@@ -1,0 +1,28 @@
+<div class="header-buttons">
+  <h5 *ngIf="title">{{title}}</h5>
+  <div *ngIf="buttons" class="header-buttons__buttons">
+    <ng-container *ngFor="let button of buttons">
+      <span class=before *ngIf="button.before && button.before(data)">{{button.before(data)}}</span>
+      <button [hasRole]="button.hasRole"
+              style="display: unset"
+              class="btn btn-primary"
+              (click)="(!button.disabled ||
+         (button.disabled && !button.disabled(data)))
+         && button.fn(data)"
+              *ngIf="!!button.text"
+              [hidden]="button.hidden && button.hidden(data)">
+        {{button.text}}
+      </button>
+
+      <i [hasRole]="button.hasRole"
+        (click)="(!button.disabled ||
+         (button.disabled && !button.disabled(data))) && button.fn(data)"
+        *ngIf="!!button.icon"
+        [class.disabled-icon]="button.disabled && button.disabled(data)"
+        [class.hide-icon]="button.hidden && button.hidden(data)"
+        [ngClass]="button.icon"
+        [ngStyle]="button.style ? button.style : {}"
+        [title]="button.title"></i>
+    </ng-container>
+  </div>
+</div>

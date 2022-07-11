@@ -1,0 +1,41 @@
+/*!
+ * Copyright (c) 2021. stockapp.
+ * Proprietary source code; any copy or modification is prohibited.
+ *
+ * @author Moulaye Abderrahmane <moolsbytheway@gmail.com>
+ *
+ */
+
+
+.offscreen {
+  position: fixed;
+  top: -10px;
+  left: 0;
+  z-index: 2;
+  transition-duration: 0.3s;
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.26);
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+
+  &.active {
+    visibility: visible;
+    top: 52px;
+    opacity: 1;
+  }
+
+  & > div {
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    width: 90vw;
+    margin: auto;
+    max-height: calc(100vh - 80px);
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 5px 5px rgba(170, 170, 170, 0.29);
+    border-radius: 4px;
+  }
+
+}

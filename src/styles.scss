@@ -1,0 +1,66 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+
+.pointer {
+  cursor: pointer;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+$primary: #787bc2;
+
+
+ag-grid-angular {
+  width: 100%;
+  height: calc(100vh - 180px)
+}
+.btn {
+  padding: 4px 11px;
+  font-size: 12px;
+
+  &.btn-primary {
+    background-color: $primary;
+    border-color: $primary;
+    color: white;
+
+    &:not(.disabled) {
+      &:hover, &:active, &:focus {
+        background-color: $primary;
+        border-color: $primary;
+        color: white;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  i {
+    padding-right: 3px;
+  }
+}
+
+.title {
+  color: $primary;
+}
+
+a {
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 5px;
+
+  .form-control {
+    font-size: 11px;
+
+    &input {
+      height: 24px;
+    }
+  }
+
+  label {
+    margin-bottom: 0;
+    font-size: 11px;
+    color: rgb(186, 186, 186);
+  }
+}

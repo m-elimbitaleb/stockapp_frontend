@@ -1,0 +1,11 @@
+{
+  "/secure/**": {
+    "target": "http://localhost:10000",
+    "secure": false,
+    "loglevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/secure": ""
+    }
+  }
+}
