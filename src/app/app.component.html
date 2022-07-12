@@ -8,12 +8,14 @@
   <div class="collapse navbar-collapse z-index" id="navbarsDefault"
        [ngbCollapse]="collapsed">
     <ul class="navbar-nav">
-      <li class="nav-item" *ngFor="let item of routes">
+      <ng-container *ngFor="let item of routes">
+      <li class="nav-item"  [hasRole]="item.hasRole">
         <a class="nav-link" routerLinkActive="active"
            [routerLink]="item.route">
           <i [class]="'fa fa-'+item.icon"></i><span>
       {{item.text}}</span></a>
       </li>
+      </ng-container>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">

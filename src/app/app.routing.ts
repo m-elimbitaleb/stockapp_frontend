@@ -3,6 +3,7 @@ import {HomeComponent} from './home/home.component';
 import {AuthGuard} from './helpers/auth.guard';
 import {LoginComponent} from "./shared/login/login.component";
 import {NotFoundComponent} from "./not-found.component";
+import {AdminAuthGuard} from "./helpers/admin-auth.guard";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
@@ -10,6 +11,10 @@ const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import("./users/users.module").then(value => value.UsersModule),
+    canActivate: [AdminAuthGuard]
+  },{
+    path: 'inventory',
+    loadChildren: () => import("./inventory/inventory.module").then(value => value.InventoryModule),
     canActivate: [AuthGuard]
   },
   {path: 'not-found', component: NotFoundComponent},

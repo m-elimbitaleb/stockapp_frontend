@@ -4,14 +4,14 @@ import {AuthenticationService} from '../services/authentication.service';
 import {RoleEnum} from "../model/user";
 
 @Injectable({providedIn: 'root'})
-export class AuthGuard implements CanActivate {
+export class AdminAuthGuard implements CanActivate {
   constructor(private router: Router,
               private authenticationService: AuthenticationService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = this.authenticationService.tokenValue;
-    if (token && this.authenticationService.userHasAnyRole([RoleEnum.ADMIN, RoleEnum.USER])) {
+    if (token && this.authenticationService.userHasAnyRole([RoleEnum.ADMIN])) {
       return true;
     }
 

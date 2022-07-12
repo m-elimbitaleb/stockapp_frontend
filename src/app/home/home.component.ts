@@ -1,14 +1,16 @@
 ﻿import {Component} from '@angular/core';
 import {AuthenticationService} from "../services/authentication.service";
-import {Token} from "../model/user";
+import {RoleEnum, Token} from "../model/user";
+import {Router} from "@angular/router";
 
 
-@Component({templateUrl: 'home.component.html'})
+@Component({template: ''})
 export class HomeComponent {
-  token: Token;
-  users: any[] = [];
 
-  constructor(private authenticationService: AuthenticationService) {
-    this.token = this.authenticationService.tokenValue;
+  constructor(private authenticationService: AuthenticationService,
+              private router: Router) {
+    const userIsAdmin = this.authenticationService.userHasAnyRole([RoleEnum.ADMIN]);
+    const redirectPath = userIsAdmin ? "warehouses" : "inventory"
+    this.router.navigate([redirectPath])
   }
 }

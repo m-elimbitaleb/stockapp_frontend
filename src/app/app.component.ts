@@ -2,7 +2,7 @@
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {AuthenticationService} from './services/authentication.service';
 import {TranslateService} from '@ngx-translate/core';
-import {Token} from "./model/user";
+import {RoleEnum, Token} from "./model/user";
 import {Subscription} from "rxjs";
 import {MModalComponent} from "./shared/components/m-modal/m-modal.component";
 import {ToastrService} from "ngx-toastr";
@@ -16,8 +16,9 @@ export class AppComponent implements OnDestroy {
   collapsed: boolean = true
   token: Token;
   routes = [
-    {text: "Home", route: "/home", icon: "home"},
-    {text: "Users", route: "/users", icon: "user"},
+    {text: "Users", route: "/users", icon: "user", hasRole: [RoleEnum.ADMIN]},
+    {text: "Inventory", route: "/inventory", icon: "cube", hasRole: [RoleEnum.USER]},
+    {text: "Warehouses", route: "/warehouses", icon: "cubes", hasRole: [RoleEnum.ADMIN]},
   ]
   loading: boolean;
   private readonly routerSubx: Subscription;

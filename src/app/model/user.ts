@@ -27,9 +27,10 @@ export class User {
   email: string;
   firstName: string;
   phone: string;
-  role: RoleEnum;
+  role: RoleEnum = RoleEnum.USER;
   genre: number;
   id: number;
   lastName: string;
   username: string;
+
 }

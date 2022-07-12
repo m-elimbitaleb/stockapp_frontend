@@ -14,7 +14,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   styleUrls: ["m-modal.scss"],
   template: `
     <div class="offscreen" [class.active]="active">
-      <div>
+      <div class="container">
         <ng-content></ng-content>
       </div>
     </div>
