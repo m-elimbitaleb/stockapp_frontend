@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <m-header title="Warehouses" [buttons]="actionButtons"></m-header>
+  <ag-grid-angular
+    [columnDefs]="gridOptions.columnDefs"
+    [frameworkComponents]="frameworkComponents"
+    [gridOptions]="gridOptions"
+    [localeText]="localeText"
+    (gridReady)="onGridReady($event)"
+    [rowData]="rowData"
+    class="ag-theme-alpine">
+  </ag-grid-angular>
+</div>
+
+<m-modal>
+  <m-warehouse-form
+    [warehouse]="editableWarehouseItem"
+    (onResult)="onWarehouseInput($event)"></m-warehouse-form>
+</m-modal>

@@ -4,6 +4,7 @@ import {AuthGuard} from './helpers/auth.guard';
 import {LoginComponent} from "./shared/login/login.component";
 import {NotFoundComponent} from "./not-found.component";
 import {AdminAuthGuard} from "./helpers/admin-auth.guard";
+import {WarehouseModule} from "./warehouse/warehouse.module";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
@@ -15,6 +16,10 @@ const routes: Routes = [
   },{
     path: 'inventory',
     loadChildren: () => import("./inventory/inventory.module").then(value => value.InventoryModule),
+    canActivate: [AuthGuard]
+  },{
+    path: 'warehouses',
+    loadChildren: () => import("./warehouse/warehouse.module").then(value => value.WarehouseModule),
     canActivate: [AuthGuard]
   },
   {path: 'not-found', component: NotFoundComponent},

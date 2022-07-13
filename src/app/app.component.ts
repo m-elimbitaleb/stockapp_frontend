@@ -2,7 +2,7 @@
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {AuthenticationService} from './services/authentication.service';
 import {TranslateService} from '@ngx-translate/core';
-import {RoleEnum, Token} from "./model/user";
+import {RoleEnum, Token, TokenUser} from "./model/user";
 import {Subscription} from "rxjs";
 import {MModalComponent} from "./shared/components/m-modal/m-modal.component";
 import {ToastrService} from "ngx-toastr";
@@ -22,6 +22,7 @@ export class AppComponent implements OnDestroy {
   ]
   loading: boolean;
   private readonly routerSubx: Subscription;
+
 
   constructor(private router: Router,
               private toastr: ToastrService,

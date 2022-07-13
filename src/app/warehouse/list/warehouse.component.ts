@@ -11,16 +11,17 @@ import {
 import {HeaderButton} from "../../shared/components/header.component";
 import {MModalComponent} from "../../shared/components/m-modal/m-modal.component";
 import {ToastrService} from "ngx-toastr";
-import {InventoryItem} from "../../model/inventory-item";
-import {InventoryService} from "../../services/inventory.service";
 import {RoleEnum} from "../../model/user";
+import {Warehouse} from "../../model/warehouse";
+import {WarehouseService} from "../../services/warehouse.service";
+import {location} from "ngx-bootstrap/utils/facade/browser";
 
 @Component({
-  selector: 'app-inventory',
-  templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss'],
+  selector: 'app-warehouse',
+  templateUrl: './warehouse.component.html',
+  styleUrls: ['./warehouse.component.scss'],
 })
-export class InventoryListComponent implements OnInit {
+export class WarehouseListComponent implements OnInit {
   @ViewChild(MModalComponent)
   private modal;
 
@@ -33,18 +34,18 @@ export class InventoryListComponent implements OnInit {
   actionButtons = [
     {
       text: "Add",
-      icon: "fa fa-inventory-plus",
+      icon: "fa fa-warehouse-plus",
       fn: () => {
-        this.createInventoryItem();
+        this.createWarehouse();
       }
     }
   ] as HeaderButton[];
-  editableInventoryItem: InventoryItem = new InventoryItem();
+  editableWarehouseItem: Warehouse = new Warehouse();
 
   constructor(private authenticationService: AuthenticationService,
               private toastr: ToastrService,
               private datepipe: DatePipe, private modalService: NgbModal,
-              private inventoryService: InventoryService) {
+              private warehouseService: WarehouseService) {
     this.frameworkComponents = {
       buttonRenderer: AgGridActionsButtonsComponent,
     };
@@ -75,32 +76,13 @@ export class InventoryListComponent implements OnInit {
           field: "name"
         },
         {
-          headerName: "Ref",
-          field: "reference"
-        },
-        {
-          headerName: "Quantity",
-          field: "quantity"
-        },
-        {
-          headerName: "Unit",
-          field: "measureUnit"
-        },
-        {
-          headerName: "Manufacturer",
-          field: "manufacturer"
-        },
-        {
-          headerName: "UPC",
-          field: "universalProductCode"
-        },
-        {
-          headerName: "Price",
-          field: "purchasePrice"
-        },
-        {
-          headerName: "Created By",
-          field: "creatorName"
+          headerName: "Location",
+          field: "location",
+          cellRenderer: (params) => {
+            if (!params.value || params.value.split(",").length < 2) return params.value;
+
+            return `<a href="https://www.google.com/maps/place/${params.value.trim()}" target="_blank" rel="noopener">Show on Map</a>`
+          }
         },
         {
           headerName: 'Created At',
@@ -124,22 +106,7 @@ export class InventoryListComponent implements OnInit {
                 style: {color: 'rgb(39, 39, 89)'},
                 title: 'Modifier',
                 hasRole: [RoleEnum.USER],
-                fn: (inventory) => this.editInventoryItem(inventory),
-
-              },
-              {
-                icon: 'fa fa-crosshairs',
-                style: {color: 'red'},
-                title: 'Pick',
-                hasRole: [RoleEnum.USER],
-                fn: (inventory) => this.pickInventoryItem(inventory),
-
-              },  {
-                icon: 'fa fa-truck',
-                style: {color: 'green'},
-                title: 'Update stock quantity',
-                hasRole: [RoleEnum.USER],
-                fn: (inventory) => this.updateStockForInventoryItem(inventory),
+                fn: (warehouse) => this.editWarehouse(warehouse),
 
               },
             ] as AgGridButton[]
@@ -162,45 +129,37 @@ export class InventoryListComponent implements OnInit {
     this.gridApi = $event.api;
     this.columnApi = $event.columnApi;
     this.gridApi.sizeColumnsToFit();
-    this.loadAllInventoryItems();
+    this.loadAllWarehouses();
   }
 
-  private loadAllInventoryItems() {
-    this.inventoryService.getAll()
-      .subscribe(inventoryItems => {
-        this.gridApi.setRowData([...inventoryItems as InventoryItem[]]);
+  private loadAllWarehouses() {
+    this.warehouseService.getAll()
+      .subscribe(warehouses => {
+        this.gridApi.setRowData([...warehouses as Warehouse[]]);
       });
   }
 
-  private createInventoryItem() {
-    this.editableInventoryItem = new InventoryItem();
+  private createWarehouse() {
+    this.editableWarehouseItem = new Warehouse();
     this.modal.show();
   }
 
-  private editInventoryItem(inventory) {
-    this.editableInventoryItem = {...inventory}
+  private editWarehouse(warehouse) {
+    this.editableWarehouseItem = {...warehouse}
     this.modal.show();
   }
 
-  onInventoryItemInput(inventory: InventoryItem) {
+  onWarehouseInput(warehouse: Warehouse) {
     this.modal.hide();
-    if (!inventory) {
+    if (!warehouse) {
       return;
     }
-    this.inventoryService.save(inventory).subscribe(
+    this.warehouseService.save(warehouse).subscribe(
       res => {
-        this.loadAllInventoryItems();
+        this.loadAllWarehouses();
         this.toastr.success("Opération réussie");
       },
       err => this.toastr.error(err));
 
-  }
-
-  private pickInventoryItem(inventory) {
-    // todo
-  }
-
-  private updateStockForInventoryItem(inventory) {
-    // todo
   }
 }

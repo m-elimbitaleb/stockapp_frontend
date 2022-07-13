@@ -19,11 +19,8 @@ export class InventoryService {
     return this.http.post(`${this.apiUrl}`, inventoryItem);
   }
 
-  disableInventoryItem(id) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  update(inventoryItem: InventoryItem) {
+    return this.http.put(`${this.apiUrl}`, inventoryItem);
   }
 
-  enableInventoryItem(id) {
-    return this.http.put(`${this.apiUrl}/activate/${id}`, {});
-  }
 }

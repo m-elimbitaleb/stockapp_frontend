@@ -9,18 +9,101 @@
 <div>
   <h5 class="title mb-3">
     <span *ngIf="!isEditMode">Ajout</span>
-    <span *ngIf="isEditMode">Modification: {{inventory.id}}</span>
+    <span *ngIf="isEditMode">Modification: {{inventory.name}}</span>
   </h5>
   <form [formGroup]="inventoryForm">
     <div class="row">
-      <div class="col-md-6">
+
+      <div class="col-md-{{isEditMode ? 4 : 6}}">
         <div class="form-group">
-          <label>Id</label>
+          <label>Name</label>
           <input type="text" class="form-control"
-                 formControlName="id"
-                 placeholder="ID">
-          <small class="text-danger" *ngIf="form['id'].dirty && form['id'].errors">
-            id invalid
+                 formControlName="name"
+                 placeholder="Name">
+          <small class="text-danger" *ngIf="form['name'].dirty && form['name'].errors">
+            Name is mandatory
+          </small>
+        </div>
+      </div>
+      <div class="col-md-{{isEditMode ? 4 : 6}}">
+        <div class="form-group">
+          <label>Purchase Price</label>
+          <input type="number" class="form-control"
+                 min="0"
+                 formControlName="purchasePrice"
+                 placeholder="Purchase Price">
+          <small class="text-danger" *ngIf="form['purchasePrice'].dirty && form['purchasePrice'].errors">
+            Purchase Price is mandatory
+          </small>
+        </div>
+      </div>
+      <ng-container *ngIf="!isEditMode">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" class="form-control"
+                   min="1"
+                   formControlName="quantity"
+                   placeholder="Qunatity">
+            <small class="text-danger" *ngIf="form['quantity'].dirty && form['quantity'].errors">
+              Quantity is mandatory
+            </small>
+          </div>
+        </div>
+      </ng-container>
+      <div class="col-md-{{isEditMode ? 4 : 6}}">
+        <div class="form-group">
+          <label>Measure Unit</label>
+          <select formControlName="measureUnit" class="form-control">
+            <option *ngFor="let measureUnit of measureUnits"
+                    [ngValue]="measureUnit">{{measureUnit}}</option>
+          </select>
+          <small class="text-danger" *ngIf="form['measureUnit'].dirty && form['measureUnit'].errors">
+            Measure Unit is mandatory
+          </small>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Manufacturer</label>
+          <input type="text" class="form-control"
+                 formControlName="manufacturer"
+                 placeholder="Manufacturer">
+          <small class="text-danger" *ngIf="form['manufacturer'].dirty && form['manufacturer'].errors">
+            Manufacturer is mandatory
+          </small>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Reference</label>
+          <input type="text" class="form-control"
+                 formControlName="reference"
+                 placeholder="Reference">
+          <small class="text-danger" *ngIf="form['reference'].dirty && form['reference'].errors">
+            Reference is mandatory
+          </small>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Universal Product Code</label>
+          <input type="text" class="form-control"
+                 formControlName="universalProductCode"
+                 placeholder="Universal Product Code">
+          <small class="text-danger" *ngIf="form['universalProductCode'].dirty && form['universalProductCode'].errors">
+            Universal Product Code is mandatory
+          </small>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control"
+                    formControlName="description"
+                    placeholder="Description..."></textarea>
+          <small class="text-danger" *ngIf="form['description'].dirty && form['description'].errors">
+            Description invalid
           </small>
         </div>
       </div>

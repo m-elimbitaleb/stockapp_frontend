@@ -19,8 +19,11 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
+        <span class="nav-link">
+          <span style="font-family: monospace">{{token.user.username}}&nbsp;({{token.user.warehouseName}})</span></span></li>
+      <li class="nav-item">
         <a (click)="logout()" class="logout nav-link">
-          <i class="fa fa-sign-out"></i><span>Se déconnecter</span></a></li>
+          <i class="fa fa-sign-out"></i><span>Logout</span></a></li>
     </ul>
   </div>
 </nav>

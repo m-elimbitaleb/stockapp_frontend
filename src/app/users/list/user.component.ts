@@ -34,7 +34,7 @@ export class UserComponent implements OnInit {
   private columnApi: ColumnApi;
   actionButtons = [
     {
-      text: "Ajouter un utilisateur",
+      text: "Add",
       icon: "fa fa-user-plus",
       fn: () => {
         this.createUser();
@@ -65,7 +65,7 @@ export class UserComponent implements OnInit {
       enableSorting: true,
       enableFilter: true,
       defaultColDef: {
-        resizable: true
+        resizable: true, floatingFilter: true, filter: true
       },
       rowData: [],
       columnDefs: [
@@ -94,7 +94,11 @@ export class UserComponent implements OnInit {
           field: "role"
         },
         {
-          headerName: 'Date de création',
+          headerName: "Warehouse",
+          field: "warehouseName"
+        },
+        {
+          headerName: 'Created At',
           field: 'createdAt',
           valueFormatter: params => this.datepipe.transform(params.data.createdAt, 'yyyy-MM-dd H:mm')
         },
@@ -112,14 +116,14 @@ export class UserComponent implements OnInit {
             buttons: [
               {
                 icon: 'fa fa-user-times',
-                title: 'Désactiver',
+                title: 'Disable',
                 style: {color: 'red'},
                 hasRole: [RoleEnum.ADMIN],
                 hidden: (user) => !user.activeUser,
                 fn: (user) => this.disableUser(user),
               }, {
                 icon: 'fa fa-user-plus',
-                title: 'Activer',
+                title: 'Enable',
                 hasRole: [RoleEnum.ADMIN],
                 hidden: (user) => user.activeUser,
                 fn: (user) => this.enableUser(user),
