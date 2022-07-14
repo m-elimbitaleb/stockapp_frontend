@@ -11,8 +11,9 @@
   </ag-grid-angular>
 </div>
 
-<m-modal>
+<m-modal *ngIf="warehouses">
   <m-user-form
+    [warehouses]="warehouses"
     [user]="editableUser"
     (onResult)="onUserInput($event)"></m-user-form>
 </m-modal>

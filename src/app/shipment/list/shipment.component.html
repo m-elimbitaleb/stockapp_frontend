@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <m-header [title]="title" [buttons]="actionButtons"></m-header>
+  <m-header [title]="title"  [buttons]="actionButtons"></m-header>
   <ag-grid-angular
     [columnDefs]="gridOptions.columnDefs"
     [frameworkComponents]="frameworkComponents"
@@ -12,7 +12,10 @@
 </div>
 
 <m-modal>
-  <m-inventory-form
-    [inventory]="editableInventoryItem"
-    (onResult)="onInventoryItemInput($event)"></m-inventory-form>
+  <m-shipment-form
+    [shipment]="editableShipment"
+    (onResult)="onShipmentInput($event)"></m-shipment-form>
 </m-modal>
+
+
+

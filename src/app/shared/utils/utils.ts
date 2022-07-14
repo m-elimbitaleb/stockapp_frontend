@@ -1,5 +1,11 @@
 import {TranslateService} from '@ngx-translate/core';
 
+export enum InventoryMode {
+  INVENTORY,
+  STORAGE,
+  SHIPMENT,
+  CROSSDOCK
+}
 
 export const convertEnumToArray = (o: any, translationService: TranslateService, key: string) => {
   const resultArray = [];

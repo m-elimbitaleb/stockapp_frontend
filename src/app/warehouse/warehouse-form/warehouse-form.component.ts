@@ -9,7 +9,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MModalResult} from "../../shared/components/m-modal/m-modal.component";
-import {MeasureUnit} from "../../model/inventory-item";
 import {Warehouse} from "../../model/warehouse";
 
 @Component({
@@ -19,8 +18,6 @@ import {Warehouse} from "../../model/warehouse";
 
 })
 export class WarehouseFormComponent implements MModalResult, OnInit {
-  measureUnits = Object.values(MeasureUnit);
-
   private _warehouse: Warehouse = new Warehouse();
 
   get warehouse() {

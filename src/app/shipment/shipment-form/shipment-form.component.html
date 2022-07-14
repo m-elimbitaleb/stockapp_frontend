@@ -1,0 +1,64 @@
+<!--
+  ~ Copyright (c) 2021. stockapp.
+  ~ Proprietary source code; any copy or modification is prohibited.
+  ~
+  ~ @author Moulaye Abderrahmane <moolsbytheway@gmail.com>
+  ~
+  -->
+
+<div>
+  <h5 class="title mb-2">
+    <span *ngIf="!isEditMode">Create</span>
+    <span *ngIf="isEditMode">Update: {{shipment.reference}}</span>
+  </h5>
+  <form [formGroup]="shipmentForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Reference</label>
+          <input type="text" class="form-control"
+                 formControlName="reference"
+                 placeholder="Reference">
+          <small class="text-danger" *ngIf="form['reference'].dirty && form['reference'].errors">
+            Reference is mandatory
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Shipper</label>
+          <input type="text" class="form-control"
+                 formControlName="shipper"
+                 placeholder="Shipper">
+          <small class="text-danger" *ngIf="form['shipper'].dirty && form['shipper'].errors">
+            Shipper is mandatory
+          </small>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="title mb-3 mt-2">Select items to be shipped</span>
+      <ag-grid-angular
+        [columnDefs]="gridOptions.columnDefs"
+        [frameworkComponents]="frameworkComponents"
+        [gridOptions]="gridOptions"
+        [localeText]="localeText"
+        (gridReady)="onGridReady($event)"
+        [rowData]="rowData"
+        class="ag-theme-alpine">
+      </ag-grid-angular>
+    </div>
+    <div class="d-flex justify-content-end">
+      <input type="reset" class="btn btn-secondary" value="Cancel" (click)="onCancel()"/>
+      <button
+        (click)="onSubmit()"
+        [disabled]="shipmentForm.invalid"
+        class="btn btn-primary">Save
+      </button>
+    </div>
+  </form>
+
+</div>
+
+
+

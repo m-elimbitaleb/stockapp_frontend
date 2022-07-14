@@ -10,8 +10,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MModalResult} from "../../shared/components/m-modal/m-modal.component";
 import {RoleEnum, User} from "../../model/user";
-import {WarehouseService} from "../../services/warehouse.service";
-import {Warehouse} from "../../model/warehouse";
 
 @Component({
   selector: "m-user-form",
@@ -23,15 +21,15 @@ export class UserFormComponent implements MModalResult, OnInit {
 
   private _user: User = new User();
   roles = Object.values(RoleEnum);
-  warehouses = []
 
   get user() {
     return this._user;
   }
 
+  @Input() warehouses: string[]
   @Input() set user(value) {
     this._user = value;
-    this.buildEditForm().then()
+    this.buildEditForm()
   }
 
   @Output() onResult: EventEmitter<User> = new EventEmitter<User>();
@@ -51,15 +49,14 @@ export class UserFormComponent implements MModalResult, OnInit {
     return this.userForm.controls;
   }
 
-  constructor(private formBuilder: FormBuilder, private warehouseService: WarehouseService) {
+  constructor(private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.buildForm().then()
+    this.buildForm()
   }
 
-  async buildEditForm() {
-    await this.fetchWarehouses();
+   buildEditForm() {
     this.passwordConfirmation = new FormControl("");
     this.userForm = this.formBuilder.group({
       id: [this.user.id],
@@ -74,8 +71,7 @@ export class UserFormComponent implements MModalResult, OnInit {
     });
   }
 
-  async buildForm() {
-    await this.fetchWarehouses();
+  buildForm() {
     this.passwordConfirmation = new FormControl("", Validators.minLength(8));
     this.userForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -96,14 +92,5 @@ export class UserFormComponent implements MModalResult, OnInit {
 
   onCancel() {
     this.onResult.emit(null);
-  }
-
-  private fetchWarehouses() {
-    return new Promise(resolve => {
-      this.warehouseService.getAll().subscribe((it: Warehouse[]) => {
-        this.warehouses = it.map(it => it.name);
-        resolve(it)
-      })
-    })
   }
 }

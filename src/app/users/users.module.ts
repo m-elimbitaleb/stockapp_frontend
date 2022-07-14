@@ -8,6 +8,7 @@ import {AgGridModule} from "ag-grid-angular";
 import {SharedModule} from "../shared/shared.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {UserFormComponent} from "./user-form/user-form.component";
+import {AgGridActionsButtonsComponent} from "../shared/ag-grid-actions-buttons/ag-grid-actions-buttons.component";
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import {UserFormComponent} from "./user-form/user-form.component";
     RouterModule.forChild(routes),
     RbacModule,
     SharedModule,
-    AgGridModule,
+    AgGridModule.withComponents([AgGridActionsButtonsComponent]),
     ReactiveFormsModule
   ],
   declarations: [UserComponent, UserFormComponent],

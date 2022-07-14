@@ -4,12 +4,13 @@ import {IAfterGuiAttachedParams, ICellRendererParams} from 'ag-grid-community';
 
 export interface AgGridButton {
   title: string;
-  fn: any;
+  fn: Function;
   text?: string;
   icon?: string;
   before?: Function;
-  disabled?: any;
-  hidden?: any;
+  disabled?: Function;
+  hidden?: Function;
+  visible?: Function;
   style?: any;
   hasRole?: any[];
 }

@@ -16,7 +16,7 @@ import {ToastrService} from "ngx-toastr";
 @Component({
   selector: "m-header",
   template: `
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center mt-1 mb-1">
       <h4 class="mt-1 title">{{title}}</h4>
       <div *ngIf="buttons"  class="action-buttons">
         <button

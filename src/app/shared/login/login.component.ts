@@ -1,9 +1,9 @@
-﻿
-import {Component, OnInit} from '@angular/core';
+﻿import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ToastrService} from 'ngx-toastr';
+import {UserService} from "../../services/user.service";
 
 @Component({
   templateUrl: 'login.component.html',
@@ -14,6 +14,8 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+
+  adminExists: boolean = undefined;
 
   constructor(
     private toastr: ToastrService,
@@ -28,12 +30,18 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  adminPasswordControl = new FormControl("", [Validators.required,
+    Validators.minLength(8)]);
+
   // convenience getter for easy access to form fields
   get f() {
     return this.loginForm.controls;
   }
 
   ngOnInit() {
+    this.authenticationService.checkAdminExists().subscribe(ack => {
+      this.adminExists = !!ack["acknowledged"];
+    })
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -62,5 +70,20 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  updateAdminPassword() {
+    this.loading = true;
+    this.authenticationService.updateAdminPassword(this.adminPasswordControl.value).subscribe(
+      (data) => {
+        this.loading = false;
+        this.toastr.success("Admin password updated successfully");
+        this.ngOnInit()
+      },
+      (error) => {
+        this.toastr.error(error);
+        this.loading = false;
+      }
+    );
   }
 }

@@ -10,7 +10,8 @@
          (button.disabled && !button.disabled(data)))
          && button.fn(data)"
               *ngIf="!!button.text"
-              [hidden]="button.hidden && button.hidden(data)">
+              [hidden]="(button.visible && !button.visible(data)) ||
+              (button.hidden && button.hidden(data))">
         {{button.text}}
       </button>
 
@@ -19,7 +20,8 @@
          (button.disabled && !button.disabled(data))) && button.fn(data)"
         *ngIf="!!button.icon"
         [class.disabled-icon]="button.disabled && button.disabled(data)"
-        [class.hide-icon]="button.hidden && button.hidden(data)"
+        [class.hide-icon]="(button.visible && !button.visible(data)) ||
+              (button.hidden && button.hidden(data))"
         [ngClass]="button.icon"
         [ngStyle]="button.style ? button.style : {}"
         [title]="button.title"></i>

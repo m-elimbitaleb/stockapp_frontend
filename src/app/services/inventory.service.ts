@@ -19,6 +19,14 @@ export class InventoryService {
     return this.http.post(`${this.apiUrl}`, inventoryItem);
   }
 
+  pickToStorage(id: number, remove?: boolean) {
+    return this.http.post(`${this.apiUrl}/pick-to-storage?remove=${!!remove ? 1 : 0}`, id);
+  }
+
+  pickForCrossDock(id: number, remove?: boolean) {
+    return this.http.post(`${this.apiUrl}/pick-cross-dock?remove=${!!remove ? 1 : 0}`, id);
+  }
+
   update(inventoryItem: InventoryItem) {
     return this.http.put(`${this.apiUrl}`, inventoryItem);
   }

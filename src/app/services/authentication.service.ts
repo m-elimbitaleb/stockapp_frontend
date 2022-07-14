@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
-import {Token} from "../model/user";
+import {RoleEnum, Token, User} from "../model/user";
 import {Router} from "@angular/router";
 
 @Injectable({providedIn: 'root'})
@@ -29,6 +29,12 @@ export class AuthenticationService {
     return this.tokenValue.user.id == id;
   }
 
+
+
+  checkAdminExists() {
+    return this.http.get(`${environment.backendPrefix}/auth/admin-exists-ack`);
+  }
+
   login(username, password) {
     return this.http
       .post<any>(`${environment.backendPrefix}/auth/token`, {
@@ -45,8 +51,8 @@ export class AuthenticationService {
       );
   }
 
-  register(user) {
-    return this.http.post(`${environment.backendPrefix}/auth/register`, user);
+  initApp(user) {
+    return this.http.post(`${environment.backendPrefix}/auth/init-app`, user);
   }
 
   logout() {
@@ -81,5 +87,12 @@ export class AuthenticationService {
       }
     }
     return false;
+  }
+
+  updateAdminPassword(value: string) {
+    const user = {
+      password: value
+    }
+    return this.initApp(user);
   }
 }

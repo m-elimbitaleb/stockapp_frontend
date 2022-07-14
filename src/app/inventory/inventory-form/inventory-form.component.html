@@ -14,7 +14,7 @@
   <form [formGroup]="inventoryForm">
     <div class="row">
 
-      <div class="col-md-{{isEditMode ? 4 : 6}}">
+      <div class="col-md-6">
         <div class="form-group">
           <label>Name</label>
           <input type="text" class="form-control"
@@ -25,7 +25,7 @@
           </small>
         </div>
       </div>
-      <div class="col-md-{{isEditMode ? 4 : 6}}">
+      <div class="col-md-6">
         <div class="form-group">
           <label>Purchase Price</label>
           <input type="number" class="form-control"
@@ -34,32 +34,6 @@
                  placeholder="Purchase Price">
           <small class="text-danger" *ngIf="form['purchasePrice'].dirty && form['purchasePrice'].errors">
             Purchase Price is mandatory
-          </small>
-        </div>
-      </div>
-      <ng-container *ngIf="!isEditMode">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Quantity</label>
-            <input type="number" class="form-control"
-                   min="1"
-                   formControlName="quantity"
-                   placeholder="Qunatity">
-            <small class="text-danger" *ngIf="form['quantity'].dirty && form['quantity'].errors">
-              Quantity is mandatory
-            </small>
-          </div>
-        </div>
-      </ng-container>
-      <div class="col-md-{{isEditMode ? 4 : 6}}">
-        <div class="form-group">
-          <label>Measure Unit</label>
-          <select formControlName="measureUnit" class="form-control">
-            <option *ngFor="let measureUnit of measureUnits"
-                    [ngValue]="measureUnit">{{measureUnit}}</option>
-          </select>
-          <small class="text-danger" *ngIf="form['measureUnit'].dirty && form['measureUnit'].errors">
-            Measure Unit is mandatory
           </small>
         </div>
       </div>

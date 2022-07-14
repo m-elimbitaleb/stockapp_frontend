@@ -12,16 +12,17 @@ import {HeaderButton} from "../../shared/components/header.component";
 import {MModalComponent} from "../../shared/components/m-modal/m-modal.component";
 import {ToastrService} from "ngx-toastr";
 import {RoleEnum} from "../../model/user";
-import {Warehouse} from "../../model/warehouse";
-import {WarehouseService} from "../../services/warehouse.service";
-import {location} from "ngx-bootstrap/utils/facade/browser";
+import {Shipment} from "../../model/shipment";
+import {ShipmentService} from "../../services/shipment.service";
+import {InventoryMode} from "../../shared/utils/utils";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-warehouse',
-  templateUrl: './warehouse.component.html',
-  styleUrls: ['./warehouse.component.scss'],
+  selector: 'app-shipment',
+  templateUrl: './shipment.component.html',
+  styleUrls: ['./shipment.component.scss'],
 })
-export class WarehouseListComponent implements OnInit {
+export class ShipmentListComponent implements OnInit {
   @ViewChild(MModalComponent)
   private modal;
 
@@ -31,28 +32,44 @@ export class WarehouseListComponent implements OnInit {
   localeText: any;
   gridApi: GridApi;
   private columnApi: ColumnApi;
-  actionButtons = [
-    {
-      text: "Add",
-      icon: "fa fa-warehouse-plus",
-      fn: () => {
-        this.createWarehouse();
-      }
-    }
-  ] as HeaderButton[];
-  editableWarehouseItem: Warehouse = new Warehouse();
+  editableShipment: Shipment = new Shipment();
+
+  actionButtons: HeaderButton[] = [];
+
+  mode : InventoryMode = InventoryMode.SHIPMENT;
+  get title() {
+    return this.mode == InventoryMode.SHIPMENT ? "Shipment" : "Cross-Dock"
+  }
 
   constructor(private authenticationService: AuthenticationService,
               private toastr: ToastrService,
+              private activatedRoute: ActivatedRoute,
               private datepipe: DatePipe, private modalService: NgbModal,
-              private warehouseService: WarehouseService) {
+              private shipmentService: ShipmentService) {
+    this.mode = this.activatedRoute.snapshot.data.mode;
     this.frameworkComponents = {
       buttonRenderer: AgGridActionsButtonsComponent,
     };
+
+
   }
 
   ngOnInit() {
+    if(this.mode == InventoryMode.SHIPMENT) this.actionButtons.push({
+      text: "Create shipment",
+        icon: "fa fa-truck",
+        fn: () => {
+        this.createShipment();
+      }
+    }); if(this.mode == InventoryMode.CROSSDOCK) this.actionButtons.push({
+      text: "Create Cross-Dock",
+        icon: "fa fa-exchange",
+        fn: () => {
+        this.createShipment(true);
+      }
+    });
     this.initAgGrid();
+
   }
 
   initAgGrid() {
@@ -68,21 +85,17 @@ export class WarehouseListComponent implements OnInit {
       rowData: [],
       columnDefs: [
         {
-          headerName: "Name",
-          field: "name"
-        },
-        {
-          headerName: "Location",
-          field: "location",
-          cellRenderer: (params) => {
-            if (!params.value || params.value.split(",").length < 2) return params.value;
-
-            return `<a href="https://www.google.com/maps/place/${params.value.trim()}" target="_blank" rel="noopener">Show on Map</a>`
-          }
-        },
-        {
-          headerName: 'Created At',
-          field: 'createdAt',
+          headerName: "Ref#",
+          field: "reference"
+        }, {
+          headerName: "Shipper",
+          field: "shipper"
+        }, {
+          headerName: "Created By",
+          field: "creatorName"
+        }, {
+          headerName: "Created At",
+          field: "createdAt",
           valueFormatter: params => this.datepipe.transform(params.data.createdAt, 'yyyy-MM-dd H:mm')
         },
         {
@@ -100,9 +113,9 @@ export class WarehouseListComponent implements OnInit {
               {
                 icon: 'fa fa-pencil-square-o',
                 style: {color: 'rgb(39, 39, 89)'},
-                title: 'Update',
-                hasRole: [RoleEnum.ADMIN],
-                fn: (warehouse) => this.editWarehouse(warehouse),
+                title: 'Modifier',
+                hasRole: [RoleEnum.USER],
+                fn: (shipment) => this.editShipment(shipment),
               },
             ] as AgGridButton[]
           }
@@ -124,37 +137,39 @@ export class WarehouseListComponent implements OnInit {
     this.gridApi = $event.api;
     this.columnApi = $event.columnApi;
     this.gridApi.sizeColumnsToFit();
-    this.loadAllWarehouses();
+    this.loadAllShipments();
   }
 
-  private loadAllWarehouses() {
-    this.warehouseService.getAll()
-      .subscribe(warehouses => {
-        this.gridApi.setRowData([...warehouses as Warehouse[]]);
+  private loadAllShipments() {
+    this.shipmentService.getAll()
+      .subscribe((shipments: Shipment[]) => {
+        const predicate = (it) => this.mode == InventoryMode.CROSSDOCK ? !!it.crossDock : !it.crossDock;
+        this.gridApi.setRowData(shipments.filter(predicate));
       });
   }
 
-  private createWarehouse() {
-    this.editableWarehouseItem = new Warehouse();
+  private createShipment(crossDock?: boolean) {
+    this.editableShipment = new Shipment(crossDock);
     this.modal.show();
   }
 
-  private editWarehouse(warehouse) {
-    this.editableWarehouseItem = {...warehouse}
+  private editShipment(shipment) {
+    this.editableShipment = {...shipment}
     this.modal.show();
   }
 
-  onWarehouseInput(warehouse: Warehouse) {
+  onShipmentInput(shipment: Shipment) {
     this.modal.hide();
-    if (!warehouse) {
+    if (!shipment) {
       return;
     }
-    this.warehouseService.save(warehouse).subscribe(
+    const action = typeof shipment.id == "number" ? "update" : "save";
+    this.shipmentService[action](shipment).subscribe(
       res => {
-        this.loadAllWarehouses();
+        this.loadAllShipments();
         this.toastr.success("Operation successful");
       },
       err => this.toastr.error(err));
-
   }
+
 }

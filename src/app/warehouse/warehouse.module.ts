@@ -8,6 +8,7 @@ import {SharedModule} from "../shared/shared.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {WarehouseListComponent} from "./list/warehouse.component";
 import {WarehouseFormComponent} from "./warehouse-form/warehouse-form.component";
+import {AgGridActionsButtonsComponent} from "../shared/ag-grid-actions-buttons/ag-grid-actions-buttons.component";
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import {WarehouseFormComponent} from "./warehouse-form/warehouse-form.component"
     RouterModule.forChild(routes),
     RbacModule,
     SharedModule,
-    AgGridModule,
+    AgGridModule.withComponents([AgGridActionsButtonsComponent]),
     ReactiveFormsModule
   ],
   declarations: [WarehouseListComponent, WarehouseFormComponent],

@@ -16,8 +16,11 @@ export class AppComponent implements OnDestroy {
   collapsed: boolean = true
   token: Token;
   routes = [
+    {text: "Inventory", route: "/inventory", icon: "list-alt", hasRole: [RoleEnum.USER]},
+    {text: "Storage", route: "/storage", icon: "cube", hasRole: [RoleEnum.USER]},
+    {text: "Shipments", route: "/shipments", icon: "truck", hasRole: [RoleEnum.USER]},
+    {text: "Cross-Dock", route: "/cross-dock", icon: "exchange", hasRole: [RoleEnum.USER]},
     {text: "Users", route: "/users", icon: "user", hasRole: [RoleEnum.ADMIN]},
-    {text: "Inventory", route: "/inventory", icon: "cube", hasRole: [RoleEnum.USER]},
     {text: "Warehouses", route: "/warehouses", icon: "cubes", hasRole: [RoleEnum.ADMIN]},
   ]
   loading: boolean;

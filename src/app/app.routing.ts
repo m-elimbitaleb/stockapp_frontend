@@ -5,6 +5,8 @@ import {LoginComponent} from "./shared/login/login.component";
 import {NotFoundComponent} from "./not-found.component";
 import {AdminAuthGuard} from "./helpers/admin-auth.guard";
 import {WarehouseModule} from "./warehouse/warehouse.module";
+import {InventoryMode} from "./shared/utils/utils";
+import {ShipmentModule} from "./shipment/shipment.module";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
@@ -15,7 +17,23 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard]
   },{
     path: 'inventory',
+    data: {mode: InventoryMode.INVENTORY},
     loadChildren: () => import("./inventory/inventory.module").then(value => value.InventoryModule),
+    canActivate: [AuthGuard]
+  },{
+    path: 'storage',
+    data: {mode: InventoryMode.STORAGE},
+    loadChildren: () => import("./inventory/inventory.module").then(value => value.InventoryModule),
+    canActivate: [AuthGuard]
+  },{
+    path: 'shipments',
+    loadChildren: () => import("./shipment/shipment.module").then(value => value.ShipmentModule),
+    data: {mode: InventoryMode.SHIPMENT},
+    canActivate: [AuthGuard]
+  },{
+    path: 'cross-dock',
+    loadChildren: () => import("./shipment/shipment.module").then(value => value.ShipmentModule),
+    data: {mode: InventoryMode.CROSSDOCK},
     canActivate: [AuthGuard]
   },{
     path: 'warehouses',

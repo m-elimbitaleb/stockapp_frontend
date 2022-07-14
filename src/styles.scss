@@ -10,11 +10,45 @@
 @import '~bootstrap/scss/bootstrap';
 $primary: #787bc2;
 
+body {
+  font-size: 24px;
+}
+
+.nav-link {
+  font-size: 0.8em;
+}
+
+.form-group {
+  label, .form-control {
+    font-size: 0.7em !important;
+  }
+}
+
+.toast-container {
+  font-size: 0.7em !important;
+}
+
+small {
+  font-size: 0.6em !important;
+}
+
+.btn {
+  font-size: 0.75em !important;
+}
+
+.ag-theme-alpine {
+  font-size: 0.7em !important;
+
+  .ag-row {
+    font-size: 1.2em !important;
+  }
+}
 
 ag-grid-angular {
   width: 100%;
   height: calc(100vh - 120px)
 }
+
 .btn {
   padding: 4px 11px;
   font-size: 12px;

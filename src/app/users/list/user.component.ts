@@ -14,6 +14,8 @@ import {HeaderButton} from "../../shared/components/header.component";
 import {MModalComponent} from "../../shared/components/m-modal/m-modal.component";
 import {Toast, ToastrService} from "ngx-toastr";
 import {MConfirmModal} from "../../shared/components/m-confirm-modal";
+import {Warehouse} from "../../model/warehouse";
+import {WarehouseService} from "../../services/warehouse.service";
 
 @Component({
   selector: 'app-user',
@@ -42,15 +44,23 @@ export class UserComponent implements OnInit {
     }
   ] as HeaderButton[];
   editableUser: User = new User();
+  warehouses: string[];
 
+  private fetchWarehouses() {
+      this.warehouseService.getAll().subscribe((it: Warehouse[]) => {
+        this.warehouses = it.map(it => it.name);
+      })
+  }
   constructor(private authenticationService: AuthenticationService,
-              private toastr: ToastrService,
+              private toastr: ToastrService, private warehouseService: WarehouseService,
               private datepipe: DatePipe, private modalService: NgbModal,
               private userService: UserService) {
+    this.fetchWarehouses();
     this.token = this.authenticationService.tokenValue;
     this.frameworkComponents = {
       buttonRenderer: AgGridActionsButtonsComponent,
     };
+
   }
 
   ngOnInit() {
@@ -59,20 +69,16 @@ export class UserComponent implements OnInit {
 
   initAgGrid() {
     this.gridOptions = <GridOptions>{
-      pagination: false,
+      pagination: true,
+      rowHeight: 45,
       rowModelType: 'clientSide',
       enableColResize: true,
       enableSorting: true,
-      enableFilter: true,
       defaultColDef: {
         resizable: true, floatingFilter: true, filter: true
       },
       rowData: [],
       columnDefs: [
-        {
-        headerName: "ID#",
-        field: "id"
-        },
         {
           headerName: 'Nom et Prénom',
           valueFormatter: params => params.data.firstName + ' ' + params.data.lastName
@@ -169,14 +175,14 @@ export class UserComponent implements OnInit {
   private disableUser(user) {
     const modalRef = this.modalService.open(MConfirmModal, {size: "xl"});
     modalRef.componentInstance.title = "Confirmation"
-    modalRef.componentInstance.text = `Are you sure you want to delete user ${user.username}`
+    modalRef.componentInstance.text = `Are you sure you want to disable user ${user.username}`
 
     modalRef.result.then(confirmed => {
       if (confirmed) {
         this.userService.disableUser(user.id).subscribe(
           res => {
             this.loadAllUsers();
-            this.toastr.success("Opération réussie");
+            this.toastr.success("Operation successful");
           },
           err => this.toastr.error(err));
       }
@@ -193,7 +199,7 @@ export class UserComponent implements OnInit {
         this.userService.enableUser(user.id).subscribe(
           res => {
             this.loadAllUsers();
-            this.toastr.success("Opération réussie");
+            this.toastr.success("Operation successful");
           },
           err => this.toastr.error(err));
       }
@@ -215,10 +221,11 @@ export class UserComponent implements OnInit {
     if (!user) {
       return;
     }
-    this.userService.save(user).subscribe(
+    const action = typeof user.id == "number" ? "update" : "save";
+    this.userService[action](user).subscribe(
       res => {
         this.loadAllUsers();
-        this.toastr.success("Opération réussie");
+        this.toastr.success("Operation successful");
       },
       err => this.toastr.error(err));
 

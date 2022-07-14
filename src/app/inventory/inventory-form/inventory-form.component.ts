@@ -9,7 +9,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MModalResult} from "../../shared/components/m-modal/m-modal.component";
-import {InventoryItem, MeasureUnit} from "../../model/inventory-item";
+import {InventoryItem} from "../../model/inventory-item";
 
 @Component({
   selector: "m-inventory-form",
@@ -18,7 +18,6 @@ import {InventoryItem, MeasureUnit} from "../../model/inventory-item";
 
 })
 export class InventoryItemFormComponent implements MModalResult, OnInit {
-  measureUnits = Object.values(MeasureUnit);
 
   private _inventory: InventoryItem = new InventoryItem();
 
@@ -55,9 +54,7 @@ export class InventoryItemFormComponent implements MModalResult, OnInit {
     this.inventoryForm = this.formBuilder.group({
       id: [this.inventory.id],
       name: [this.inventory.name, Validators.required],
-      measureUnit: [this.inventory.measureUnit, Validators.required],
       purchasePrice: [this.inventory.purchasePrice, Validators.required],
-      quantity: [this.inventory.quantity, Validators.required],
       manufacturer: [this.inventory.manufacturer],
       reference: [this.inventory.reference],
       universalProductCode: [this.inventory.universalProductCode],
@@ -70,9 +67,7 @@ export class InventoryItemFormComponent implements MModalResult, OnInit {
     this.inventoryForm = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
-      measureUnit: [MeasureUnit.BOX, Validators.required],
       purchasePrice: [0, Validators.required],
-      quantity: [1, Validators.required],
       manufacturer: [''],
       reference: [''],
       universalProductCode: [''],

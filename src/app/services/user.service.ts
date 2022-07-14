@@ -19,6 +19,10 @@ export class UserService {
     return this.http.post(`${this.apiUrl}`, user);
   }
 
+  update(user: User) {
+    return this.http.put(`${this.apiUrl}/update-info`, user);
+  }
+
   disableUser(id) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
