@@ -16,10 +16,10 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Email</label>
-          <input type="email" class="form-control"
-                 formControlName="email"
-                 placeholder="Email address">
-          <small class="text-danger" *ngIf="form['email'].dirty && form['email'].errors">
+          <input class="form-control" formControlName="email"
+                 placeholder="Email address"
+                 type="email">
+          <small *ngIf="form['email'].dirty && form['email'].errors" class="text-danger">
             Email invalid
           </small>
         </div>
@@ -27,11 +27,11 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Username</label>
-          <input type="text" class="form-control"
-                 formControlName="username"
-                 placeholder="Username">
-          <small class="text-danger" *ngIf="form['username'].dirty
-               && form['username'].errors">
+          <input class="form-control" formControlName="username"
+                 placeholder="Username"
+                 type="text">
+          <small *ngIf="form['username'].dirty
+               && form['username'].errors" class="text-danger">
             Username required
           </small>
         </div>
@@ -42,11 +42,11 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>First name</label>
-          <input type="text" class="form-control"
-                 formControlName="firstName"
-                 placeholder="First name">
-          <small class="text-danger" *ngIf="form['firstName'].dirty
-               && form['firstName'].errors">
+          <input class="form-control" formControlName="firstName"
+                 placeholder="First name"
+                 type="text">
+          <small *ngIf="form['firstName'].dirty
+               && form['firstName'].errors" class="text-danger">
             First name is required
           </small>
         </div>
@@ -54,11 +54,11 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Last name</label>
-          <input type="text" class="form-control"
-                 formControlName="lastName"
-                 placeholder="Last name">
-          <small class="text-danger" *ngIf="form['lastName'].dirty
-               && form['lastName'].errors">
+          <input class="form-control" formControlName="lastName"
+                 placeholder="Last name"
+                 type="text">
+          <small *ngIf="form['lastName'].dirty
+               && form['lastName'].errors" class="text-danger">
             Last name is required
           </small>
         </div>
@@ -68,11 +68,11 @@
       <div class="col-md-4">
         <div class="form-group">
           <label>Phone</label>
-          <input type="text" class="form-control"
-                 formControlName="phone"
-                 placeholder="Téléphone exemple: +21240009900">
-          <small class="text-danger" *ngIf="form['phone'].dirty
-               && form['phone'].errors">
+          <input class="form-control" formControlName="phone"
+                 placeholder="Téléphone exemple: +21240009900"
+                 type="text">
+          <small *ngIf="form['phone'].dirty
+               && form['phone'].errors" class="text-danger">
             Phone is required
           </small>
         </div>
@@ -80,11 +80,11 @@
       <div class="col-md-4">
         <div class="form-group">
           <label>Role</label>
-          <select formControlName="role" class="form-control">
+          <select class="form-control" formControlName="role">
             <option *ngFor="let role of roles"
                     [ngValue]="role">{{role}}</option>
           </select>
-          <small class="text-danger" *ngIf="form['role'].dirty && form['role'].errors">
+          <small *ngIf="form['role'].dirty && form['role'].errors" class="text-danger">
             Role is required
           </small>
         </div>
@@ -92,11 +92,11 @@
       <div class="col-md-4">
         <div class="form-group">
           <label>Warehouse</label>
-          <select formControlName="warehouseName" class="form-control">
+          <select class="form-control" formControlName="warehouseName">
             <option *ngFor="let warehouseName of warehouses"
                     [ngValue]="warehouseName">{{warehouseName}}</option>
           </select>
-          <small class="text-danger" *ngIf="form['warehouseName'].dirty && form['warehouseName'].errors">
+          <small *ngIf="form['warehouseName'].dirty && form['warehouseName'].errors" class="text-danger">
             Warehouse is required
           </small>
         </div>
@@ -107,11 +107,11 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control"
-                   formControlName="password"
-                   placeholder="Password"/>
-            <small class="text-danger" *ngIf="form['password'].dirty
-               && form['password'].errors">
+            <input class="form-control" formControlName="password"
+                   placeholder="Password"
+                   type="password"/>
+            <small *ngIf="form['password'].dirty
+               && form['password'].errors" class="text-danger">
               Password minimum length is 8
             </small>
           </div>
@@ -119,16 +119,16 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Password confirmation</label>
-            <input type="password" class="form-control"
-                   [formControl]="passwordConfirmation"
-                   placeholder="Password confirmation">
-            <small class="text-danger" *ngIf="passwordConfirmation.dirty
-               && passwordConfirmation.errors">
+            <input [formControl]="passwordConfirmation" class="form-control"
+                   placeholder="Password confirmation"
+                   type="password">
+            <small *ngIf="passwordConfirmation.dirty
+               && passwordConfirmation.errors" class="text-danger">
               Password confirmation minimum length is 8
             </small>
-            <small class="text-danger" *ngIf="form['password'].dirty
+            <small *ngIf="form['password'].dirty
               && passwordConfirmation.dirty
-              && !passwordMatches">
+              && !passwordMatches" class="text-danger">
               Passwords doesn't match
             </small>
           </div>
@@ -136,7 +136,7 @@
       </div>
     </ng-container>
     <div class="d-flex justify-content-end">
-      <input type="reset" class="btn btn-secondary" value="Cancel" (click)="onCancel()"/>
+      <input (click)="onCancel()" class="btn btn-secondary" type="reset" value="Cancel"/>
       <button
         (click)="onSubmit()"
         [disabled]="userForm.invalid || !passwordMatches"

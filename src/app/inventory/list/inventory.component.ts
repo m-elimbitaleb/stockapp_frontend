@@ -24,32 +24,17 @@ import {ShipmentService} from "../../services/shipment.service";
   styleUrls: ['./inventory.component.scss'],
 })
 export class InventoryListComponent implements OnInit {
-  @ViewChild(MModalComponent)
-  private modal;
-
   gridOptions: GridOptions;
   frameworkComponents: any;
   rowData = [];
   localeText: any;
   gridApi: GridApi;
-  private columnApi: ColumnApi;
   editableInventoryItem: InventoryItem = new InventoryItem();
-
-  private readonly inventoryMode: InventoryMode;
   actionButtons: HeaderButton[];
-
-  get title() {
-    switch (this.inventoryMode) {
-      case InventoryMode.INVENTORY:
-        return "Inventory";
-      case InventoryMode.STORAGE:
-        return "Storage";
-      case InventoryMode.CROSSDOCK:
-        return "Cross-Dock";
-      default:
-        return "";
-    }
-  }
+  @ViewChild(MModalComponent)
+  private modal;
+  private columnApi: ColumnApi;
+  private readonly inventoryMode: InventoryMode;
 
   constructor(private authenticationService: AuthenticationService,
               private toastr: ToastrService,
@@ -76,6 +61,19 @@ export class InventoryListComponent implements OnInit {
     }
 
     this.actionButtons = actionButtons;
+  }
+
+  get title() {
+    switch (this.inventoryMode) {
+      case InventoryMode.INVENTORY:
+        return "Inventory";
+      case InventoryMode.STORAGE:
+        return "Storage";
+      case InventoryMode.CROSSDOCK:
+        return "Cross-Dock";
+      default:
+        return "";
+    }
   }
 
   ngOnInit() {
@@ -214,6 +212,21 @@ export class InventoryListComponent implements OnInit {
     this.loadAllInventoryItems();
   }
 
+  onInventoryItemInput(inventory: InventoryItem) {
+    this.modal.hide();
+    if (!inventory) {
+      return;
+    }
+    const action = typeof inventory.id == "number" ? "update" : "save";
+    this.inventoryService[action](inventory).subscribe(
+      res => {
+        this.loadAllInventoryItems();
+        this.toastr.success("Operation successful");
+      },
+      err => this.toastr.error(err));
+
+  }
+
   private loadAllInventoryItems() {
     this.inventoryService.getAll()
       .subscribe((inventoryItems: InventoryItem[]) => {
@@ -239,21 +252,6 @@ export class InventoryListComponent implements OnInit {
   private editInventoryItem(inventory) {
     this.editableInventoryItem = {...inventory}
     this.modal.show();
-  }
-
-  onInventoryItemInput(inventory: InventoryItem) {
-    this.modal.hide();
-    if (!inventory) {
-      return;
-    }
-    const action = typeof inventory.id == "number" ? "update" : "save";
-    this.inventoryService[action](inventory).subscribe(
-      res => {
-        this.loadAllInventoryItems();
-        this.toastr.success("Operation successful");
-      },
-      err => this.toastr.error(err));
-
   }
 
   private pickForStorage(inventory, remove?: boolean) {

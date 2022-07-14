@@ -19,22 +19,25 @@ import {RoleEnum, User} from "../../model/user";
 })
 export class UserFormComponent implements MModalResult, OnInit {
 
-  private _user: User = new User();
   roles = Object.values(RoleEnum);
+  @Input() warehouses: string[]
+  @Output() onResult: EventEmitter<User> = new EventEmitter<User>();
+  public userForm: FormGroup;
+  passwordConfirmation: FormControl;
+
+  constructor(private formBuilder: FormBuilder) {
+  }
+
+  private _user: User = new User();
 
   get user() {
     return this._user;
   }
 
-  @Input() warehouses: string[]
   @Input() set user(value) {
     this._user = value;
     this.buildEditForm()
   }
-
-  @Output() onResult: EventEmitter<User> = new EventEmitter<User>();
-  public userForm: FormGroup;
-  passwordConfirmation: FormControl;
 
   get passwordMatches() {
     return this.isEditMode || !!this.userForm.controls["password"].value &&
@@ -49,14 +52,11 @@ export class UserFormComponent implements MModalResult, OnInit {
     return this.userForm.controls;
   }
 
-  constructor(private formBuilder: FormBuilder) {
-  }
-
   ngOnInit() {
     this.buildForm()
   }
 
-   buildEditForm() {
+  buildEditForm() {
     this.passwordConfirmation = new FormControl("");
     this.userForm = this.formBuilder.group({
       id: [this.user.id],

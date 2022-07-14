@@ -2,7 +2,7 @@
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {AuthenticationService} from './services/authentication.service';
 import {TranslateService} from '@ngx-translate/core';
-import {RoleEnum, Token, TokenUser} from "./model/user";
+import {RoleEnum, Token} from "./model/user";
 import {Subscription} from "rxjs";
 import {MModalComponent} from "./shared/components/m-modal/m-modal.component";
 import {ToastrService} from "ngx-toastr";
@@ -10,9 +10,6 @@ import {ToastrService} from "ngx-toastr";
 
 @Component({selector: 'app', styleUrls: ['app.component.scss'], templateUrl: 'app.component.html'})
 export class AppComponent implements OnDestroy {
-  @ViewChild(MModalComponent)
-  private modal;
-
   collapsed: boolean = true
   token: Token;
   routes = [
@@ -24,6 +21,8 @@ export class AppComponent implements OnDestroy {
     {text: "Warehouses", route: "/warehouses", icon: "cubes", hasRole: [RoleEnum.ADMIN]},
   ]
   loading: boolean;
+  @ViewChild(MModalComponent)
+  private modal;
   private readonly routerSubx: Subscription;
 
 

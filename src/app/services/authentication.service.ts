@@ -1,11 +1,9 @@
-﻿
-
-import {Injectable} from '@angular/core';
+﻿import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
-import {RoleEnum, Token, User} from "../model/user";
+import {Token} from "../model/user";
 import {Router} from "@angular/router";
 
 @Injectable({providedIn: 'root'})
@@ -28,7 +26,6 @@ export class AuthenticationService {
   public isConnectedUser(id: number) {
     return this.tokenValue.user.id == id;
   }
-
 
 
   checkAdminExists() {

@@ -17,10 +17,10 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Name</label>
-          <input type="text" class="form-control"
-                 formControlName="name"
-                 placeholder="Name">
-          <small class="text-danger" *ngIf="form['name'].dirty && form['name'].errors">
+          <input class="form-control" formControlName="name"
+                 placeholder="Name"
+                 type="text">
+          <small *ngIf="form['name'].dirty && form['name'].errors" class="text-danger">
             Name is mandatory
           </small>
         </div>
@@ -28,11 +28,11 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Purchase Price</label>
-          <input type="number" class="form-control"
+          <input class="form-control" formControlName="purchasePrice"
                  min="0"
-                 formControlName="purchasePrice"
-                 placeholder="Purchase Price">
-          <small class="text-danger" *ngIf="form['purchasePrice'].dirty && form['purchasePrice'].errors">
+                 placeholder="Purchase Price"
+                 type="number">
+          <small *ngIf="form['purchasePrice'].dirty && form['purchasePrice'].errors" class="text-danger">
             Purchase Price is mandatory
           </small>
         </div>
@@ -40,10 +40,10 @@
       <div class="col-md-4">
         <div class="form-group">
           <label>Manufacturer</label>
-          <input type="text" class="form-control"
-                 formControlName="manufacturer"
-                 placeholder="Manufacturer">
-          <small class="text-danger" *ngIf="form['manufacturer'].dirty && form['manufacturer'].errors">
+          <input class="form-control" formControlName="manufacturer"
+                 placeholder="Manufacturer"
+                 type="text">
+          <small *ngIf="form['manufacturer'].dirty && form['manufacturer'].errors" class="text-danger">
             Manufacturer is mandatory
           </small>
         </div>
@@ -51,10 +51,10 @@
       <div class="col-md-4">
         <div class="form-group">
           <label>Reference</label>
-          <input type="text" class="form-control"
-                 formControlName="reference"
-                 placeholder="Reference">
-          <small class="text-danger" *ngIf="form['reference'].dirty && form['reference'].errors">
+          <input class="form-control" formControlName="reference"
+                 placeholder="Reference"
+                 type="text">
+          <small *ngIf="form['reference'].dirty && form['reference'].errors" class="text-danger">
             Reference is mandatory
           </small>
         </div>
@@ -62,10 +62,10 @@
       <div class="col-md-4">
         <div class="form-group">
           <label>Universal Product Code</label>
-          <input type="text" class="form-control"
-                 formControlName="universalProductCode"
-                 placeholder="Universal Product Code">
-          <small class="text-danger" *ngIf="form['universalProductCode'].dirty && form['universalProductCode'].errors">
+          <input class="form-control" formControlName="universalProductCode"
+                 placeholder="Universal Product Code"
+                 type="text">
+          <small *ngIf="form['universalProductCode'].dirty && form['universalProductCode'].errors" class="text-danger">
             Universal Product Code is mandatory
           </small>
         </div>
@@ -76,14 +76,14 @@
           <textarea class="form-control"
                     formControlName="description"
                     placeholder="Description..."></textarea>
-          <small class="text-danger" *ngIf="form['description'].dirty && form['description'].errors">
+          <small *ngIf="form['description'].dirty && form['description'].errors" class="text-danger">
             Description invalid
           </small>
         </div>
       </div>
     </div>
     <div class="d-flex justify-content-end">
-      <input type="reset" class="btn btn-secondary" value="Cancel" (click)="onCancel()"/>
+      <input (click)="onCancel()" class="btn btn-secondary" type="reset" value="Cancel"/>
       <button
         (click)="onSubmit()"
         [disabled]="inventoryForm.invalid"

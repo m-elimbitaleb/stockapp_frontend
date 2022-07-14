@@ -1,11 +1,11 @@
 <div class="container-fluid">
-  <m-header title="Users" [buttons]="actionButtons"></m-header>
+  <m-header [buttons]="actionButtons" title="Users"></m-header>
   <ag-grid-angular
+    (gridReady)="onGridReady($event)"
     [columnDefs]="gridOptions.columnDefs"
     [frameworkComponents]="frameworkComponents"
     [gridOptions]="gridOptions"
     [localeText]="localeText"
-    (gridReady)="onGridReady($event)"
     [rowData]="rowData"
     class="ag-theme-alpine">
   </ag-grid-angular>
@@ -13,7 +13,7 @@
 
 <m-modal *ngIf="warehouses">
   <m-user-form
-    [warehouses]="warehouses"
+    (onResult)="onUserInput($event)"
     [user]="editableUser"
-    (onResult)="onUserInput($event)"></m-user-form>
+    [warehouses]="warehouses"></m-user-form>
 </m-modal>

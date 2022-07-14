@@ -1,11 +1,11 @@
 <div class="container-fluid">
-  <m-header [title]="title"  [buttons]="actionButtons"></m-header>
+  <m-header [buttons]="actionButtons" [title]="title"></m-header>
   <ag-grid-angular
+    (gridReady)="onGridReady($event)"
     [columnDefs]="gridOptions.columnDefs"
     [frameworkComponents]="frameworkComponents"
     [gridOptions]="gridOptions"
     [localeText]="localeText"
-    (gridReady)="onGridReady($event)"
     [rowData]="rowData"
     class="ag-theme-alpine">
   </ag-grid-angular>
@@ -13,8 +13,8 @@
 
 <m-modal>
   <m-shipment-form
-    [shipment]="editableShipment"
-    (onResult)="onShipmentInput($event)"></m-shipment-form>
+    (onResult)="onShipmentInput($event)"
+    [shipment]="editableShipment"></m-shipment-form>
 </m-modal>
 
 

@@ -40,8 +40,8 @@ export class AgGridActionsButtonsComponent implements ICellRendererAngularComp {
 
   agInit(params: ButtonParams): void {
     params.buttons.forEach(button => {
-      if(!button.hasRole) {
-        button.hasRole= []
+      if (!button.hasRole) {
+        button.hasRole = []
       }
     })
     this.data = params.data;

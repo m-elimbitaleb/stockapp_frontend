@@ -1,7 +1,7 @@
 ﻿<div class="bg"></div>
 <div class="container-fluid main-content">
 
-  <form class="p-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="p-3">
 
     <div class="row mt-3">
       <div class="mb-2 form-group col-md-12">
@@ -12,11 +12,11 @@
       <div *ngIf="adminExists; else createNewAdmin" class="row mt-3">
         <div class="form-group col-md-12">
           <input
-            type="text"
-            formControlName="username"
-            class="form-control"
-            placeholder="Username"
             [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+            class="form-control"
+            formControlName="username"
+            placeholder="Username"
+            type="text"
           />
           <div
             *ngIf="submitted && f.username.errors"
@@ -29,11 +29,11 @@
         </div>
         <div class="form-group col-md-12">
           <input
-            type="password"
-            formControlName="password"
-            class="form-control"
-            placeholder="Password"
             [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+            class="form-control"
+            formControlName="password"
+            placeholder="Password"
+            type="password"
           />
           <div
             *ngIf="submitted && f.password.errors"
@@ -59,10 +59,10 @@
 
         <div class="form-group col-md-12">
           <input
-            type="text"
             [formControl]="adminPasswordControl"
             class="form-control"
             placeholder="New admin password"
+            type="text"
           />
         </div>
 

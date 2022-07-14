@@ -28,8 +28,27 @@ import {InventoryMode} from "../../shared/utils/utils";
 })
 export class ShipmentFormComponent implements MModalResult, OnInit {
 
-  private _shipment: Shipment = new Shipment();
+  @Output() onResult: EventEmitter<Shipment> = new EventEmitter<Shipment>();
+  shipmentForm: FormGroup;
+  passwordConfirmation: FormControl;
+  gridOptions: GridOptions;
+  frameworkComponents: any;
+  rowData = [];
+  localeText: any;
+  gridApi: GridApi;
   private mode: InventoryMode;
+  private columnApi: ColumnApi;
+
+  constructor(private formBuilder: FormBuilder,
+              private toastr: ToastrService,
+              private activatedRoute: ActivatedRoute,
+              private datepipe: DatePipe, private auth: AuthenticationService,
+              private shipmentService: ShipmentService,
+              private inventoryService: InventoryService) {
+    this.mode = this.activatedRoute.snapshot.data.mode;
+  }
+
+  private _shipment: Shipment = new Shipment();
 
   get shipment() {
     return this._shipment;
@@ -41,34 +60,19 @@ export class ShipmentFormComponent implements MModalResult, OnInit {
     this.checkSelectedItems();
   }
 
-  @Output() onResult: EventEmitter<Shipment> = new EventEmitter<Shipment>();
-  shipmentForm: FormGroup;
-  passwordConfirmation: FormControl;
+  get isEditMode() {
+    return typeof this.shipment.id == "number";
+  }
 
-
-  gridOptions: GridOptions;
-  frameworkComponents: any;
-  rowData = [];
-  localeText: any;
-  gridApi: GridApi;
-  private columnApi: ColumnApi;
-
+  get form() {
+    return this.shipmentForm.controls;
+  }
 
   onGridReady($event) {
     this.gridApi = $event.api;
     this.columnApi = $event.columnApi;
     this.gridApi.sizeColumnsToFit();
     this.loadAllInventoryItems();
-  }
-
-  private loadAllInventoryItems() {
-    this.inventoryService.getAll()
-      .subscribe((inventoryItems: InventoryItem[]) => {
-        let predicate = (it) => !!it.storageDate && !it.crossDock;
-        if(this.mode == InventoryMode.CROSSDOCK) predicate = (it) => !it.storageDate && !!it.crossDock;
-        this.gridApi.setRowData(inventoryItems.filter(predicate));
-        this.uncheckAll(true)
-      });
   }
 
   initAgGrid() {
@@ -114,30 +118,12 @@ export class ShipmentFormComponent implements MModalResult, OnInit {
     this.localeText = this.initAgGridLocale();
   }
 
-
   initAgGridLocale() {
     const AG_GRID_LOCAL = {};
     Object.keys(AG_GRID_LOCALE_FR).forEach((key) => {
       AG_GRID_LOCAL[key] = AG_GRID_LOCALE_FR[key];
     });
     return AG_GRID_LOCAL;
-  }
-
-  get isEditMode() {
-    return typeof this.shipment.id == "number";
-  }
-
-  get form() {
-    return this.shipmentForm.controls;
-  }
-
-  constructor(private formBuilder: FormBuilder,
-              private toastr: ToastrService,
-              private activatedRoute: ActivatedRoute,
-              private datepipe: DatePipe, private auth: AuthenticationService,
-              private shipmentService: ShipmentService,
-              private inventoryService: InventoryService) {
-    this.mode = this.activatedRoute.snapshot.data.mode;
   }
 
   ngOnInit() {
@@ -164,7 +150,6 @@ export class ShipmentFormComponent implements MModalResult, OnInit {
     });
   }
 
-
   onSubmit() {
     const selectedNodes = this.gridApi.getSelectedNodes();
 
@@ -187,6 +172,16 @@ export class ShipmentFormComponent implements MModalResult, OnInit {
     this.onResult.emit(null);
   }
 
+  private loadAllInventoryItems() {
+    this.inventoryService.getAll()
+      .subscribe((inventoryItems: InventoryItem[]) => {
+        let predicate = (it) => !!it.storageDate && !it.crossDock;
+        if (this.mode == InventoryMode.CROSSDOCK) predicate = (it) => !it.storageDate && !!it.crossDock;
+        this.gridApi.setRowData(inventoryItems.filter(predicate));
+        this.uncheckAll(true)
+      });
+  }
+
   private checkSelectedItems() {
     if (!this.gridApi) return;
     this.gridApi.forEachNode(node => {
@@ -198,23 +193,23 @@ export class ShipmentFormComponent implements MModalResult, OnInit {
   }
 
   private uncheckAll(checkItems?: boolean) {
-      this.shipmentService.getItemsInShipments()
-        .subscribe((itemsInShipments: number[]) => {
-          if (!this.gridApi) return;
-          this.gridApi.forEachNode(node => {
-            node.setSelected(false)
-            node.setRowSelectable(true)
-            // if the item is already in shipments but not in the current shipment dont allow selection
-            const shipmentItems = this.shipment.items || []
-            const itemIsInCurrentShipment = shipmentItems.includes(node.data.id);
-            const blacklist = itemsInShipments.filter(it => !shipmentItems.includes(it));
-            if (!itemIsInCurrentShipment && blacklist.includes(node.data.id)) {
-              node.setRowSelectable(false)
-            } else if (itemIsInCurrentShipment) {
-                node.setSelected(true)
-            }
+    this.shipmentService.getItemsInShipments()
+      .subscribe((itemsInShipments: number[]) => {
+        if (!this.gridApi) return;
+        this.gridApi.forEachNode(node => {
+          node.setSelected(false)
+          node.setRowSelectable(true)
+          // if the item is already in shipments but not in the current shipment dont allow selection
+          const shipmentItems = this.shipment.items || []
+          const itemIsInCurrentShipment = shipmentItems.includes(node.data.id);
+          const blacklist = itemsInShipments.filter(it => !shipmentItems.includes(it));
+          if (!itemIsInCurrentShipment && blacklist.includes(node.data.id)) {
+            node.setRowSelectable(false)
+          } else if (itemIsInCurrentShipment) {
+            node.setSelected(true)
+          }
 
-          });
-    });
+        });
+      });
   }
 }

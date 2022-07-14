@@ -2,29 +2,29 @@
   <h5 *ngIf="title">{{title}}</h5>
   <div *ngIf="buttons" class="header-buttons__buttons">
     <ng-container *ngFor="let button of buttons">
-      <span class=before *ngIf="button.before && button.before(data)">{{button.before(data)}}</span>
-      <button [hasRole]="button.hasRole"
-              style="display: unset"
-              class="btn btn-primary"
-              (click)="(!button.disabled ||
+      <span *ngIf="button.before && button.before(data)" class=before>{{button.before(data)}}</span>
+      <button (click)="(!button.disabled ||
          (button.disabled && !button.disabled(data)))
          && button.fn(data)"
               *ngIf="!!button.text"
+              [hasRole]="button.hasRole"
               [hidden]="(button.visible && !button.visible(data)) ||
-              (button.hidden && button.hidden(data))">
+              (button.hidden && button.hidden(data))"
+              class="btn btn-primary"
+              style="display: unset">
         {{button.text}}
       </button>
 
-      <i [hasRole]="button.hasRole"
-        (click)="(!button.disabled ||
+      <i (click)="(!button.disabled ||
          (button.disabled && !button.disabled(data))) && button.fn(data)"
-        *ngIf="!!button.icon"
-        [class.disabled-icon]="button.disabled && button.disabled(data)"
-        [class.hide-icon]="(button.visible && !button.visible(data)) ||
+         *ngIf="!!button.icon"
+         [class.disabled-icon]="button.disabled && button.disabled(data)"
+         [class.hide-icon]="(button.visible && !button.visible(data)) ||
               (button.hidden && button.hidden(data))"
-        [ngClass]="button.icon"
-        [ngStyle]="button.style ? button.style : {}"
-        [title]="button.title"></i>
+         [hasRole]="button.hasRole"
+         [ngClass]="button.icon"
+         [ngStyle]="button.style ? button.style : {}"
+         [title]="button.title"></i>
     </ng-container>
   </div>
 </div>

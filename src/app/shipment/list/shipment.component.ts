@@ -23,23 +23,17 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./shipment.component.scss'],
 })
 export class ShipmentListComponent implements OnInit {
-  @ViewChild(MModalComponent)
-  private modal;
-
   gridOptions: GridOptions;
   frameworkComponents: any;
   rowData = [];
   localeText: any;
   gridApi: GridApi;
-  private columnApi: ColumnApi;
   editableShipment: Shipment = new Shipment();
-
   actionButtons: HeaderButton[] = [];
-
-  mode : InventoryMode = InventoryMode.SHIPMENT;
-  get title() {
-    return this.mode == InventoryMode.SHIPMENT ? "Shipment" : "Cross-Dock"
-  }
+  mode: InventoryMode = InventoryMode.SHIPMENT;
+  @ViewChild(MModalComponent)
+  private modal;
+  private columnApi: ColumnApi;
 
   constructor(private authenticationService: AuthenticationService,
               private toastr: ToastrService,
@@ -54,17 +48,22 @@ export class ShipmentListComponent implements OnInit {
 
   }
 
+  get title() {
+    return this.mode == InventoryMode.SHIPMENT ? "Shipment" : "Cross-Dock"
+  }
+
   ngOnInit() {
-    if(this.mode == InventoryMode.SHIPMENT) this.actionButtons.push({
+    if (this.mode == InventoryMode.SHIPMENT) this.actionButtons.push({
       text: "Create shipment",
-        icon: "fa fa-truck",
-        fn: () => {
+      icon: "fa fa-truck",
+      fn: () => {
         this.createShipment();
       }
-    }); if(this.mode == InventoryMode.CROSSDOCK) this.actionButtons.push({
+    });
+    if (this.mode == InventoryMode.CROSSDOCK) this.actionButtons.push({
       text: "Create Cross-Dock",
-        icon: "fa fa-exchange",
-        fn: () => {
+      icon: "fa fa-exchange",
+      fn: () => {
         this.createShipment(true);
       }
     });
@@ -140,6 +139,20 @@ export class ShipmentListComponent implements OnInit {
     this.loadAllShipments();
   }
 
+  onShipmentInput(shipment: Shipment) {
+    this.modal.hide();
+    if (!shipment) {
+      return;
+    }
+    const action = typeof shipment.id == "number" ? "update" : "save";
+    this.shipmentService[action](shipment).subscribe(
+      res => {
+        this.loadAllShipments();
+        this.toastr.success("Operation successful");
+      },
+      err => this.toastr.error(err));
+  }
+
   private loadAllShipments() {
     this.shipmentService.getAll()
       .subscribe((shipments: Shipment[]) => {
@@ -156,20 +169,6 @@ export class ShipmentListComponent implements OnInit {
   private editShipment(shipment) {
     this.editableShipment = {...shipment}
     this.modal.show();
-  }
-
-  onShipmentInput(shipment: Shipment) {
-    this.modal.hide();
-    if (!shipment) {
-      return;
-    }
-    const action = typeof shipment.id == "number" ? "update" : "save";
-    this.shipmentService[action](shipment).subscribe(
-      res => {
-        this.loadAllShipments();
-        this.toastr.success("Operation successful");
-      },
-      err => this.toastr.error(err));
   }
 
 }

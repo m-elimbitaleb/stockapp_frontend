@@ -1,26 +1,27 @@
 ﻿<nav *ngIf="token" class="navbar fixed-top navbar-expand-xl navbar-dark">
   <a class="navbar-brand" routerLink="/">StockApp</a>
-  <button class="navbar-toggler z-index hidden-md-up" type="button"
+  <button (click)="collapsed = !collapsed" class="navbar-toggler z-index hidden-md-up"
           data-target="#navbarsDefault"
-          (click)="collapsed = !collapsed">&#9776;
+          type="button">&#9776;
   </button>
 
-  <div class="collapse navbar-collapse z-index" id="navbarsDefault"
-       [ngbCollapse]="collapsed">
+  <div [ngbCollapse]="collapsed" class="collapse navbar-collapse z-index"
+       id="navbarsDefault">
     <ul class="navbar-nav">
       <ng-container *ngFor="let item of routes">
-      <li class="nav-item"  [hasRole]="item.hasRole">
-        <a class="nav-link" routerLinkActive="active"
-           [routerLink]="item.route">
-          <i [class]="'fa fa-'+item.icon"></i><span>
+        <li [hasRole]="item.hasRole" class="nav-item">
+          <a [routerLink]="item.route" class="nav-link"
+             routerLinkActive="active">
+            <i [class]="'fa fa-'+item.icon"></i><span>
       {{item.text}}</span></a>
-      </li>
+        </li>
       </ng-container>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <span class="nav-link">
-          <span style="font-family: monospace">{{token.user.username}}&nbsp;({{token.user.warehouseName}})</span></span></li>
+          <span style="font-family: monospace">{{token.user.username}}&nbsp;({{token.user.warehouseName}})</span></span>
+      </li>
       <li class="nav-item">
         <a (click)="logout()" class="logout nav-link">
           <i class="fa fa-sign-out"></i><span>Logout</span></a></li>
@@ -29,7 +30,7 @@
 </nav>
 
 <div>
-  <div class="loading" *ngIf="loading">Loading...</div>
+  <div *ngIf="loading" class="loading">Loading...</div>
   <router-outlet></router-outlet>
 </div>
 

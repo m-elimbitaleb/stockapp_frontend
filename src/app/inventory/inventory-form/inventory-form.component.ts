@@ -19,6 +19,13 @@ import {InventoryItem} from "../../model/inventory-item";
 })
 export class InventoryItemFormComponent implements MModalResult, OnInit {
 
+  @Output() onResult: EventEmitter<InventoryItem> = new EventEmitter<InventoryItem>();
+  inventoryForm: FormGroup;
+  passwordConfirmation: FormControl;
+
+  constructor(private formBuilder: FormBuilder) {
+  }
+
   private _inventory: InventoryItem = new InventoryItem();
 
   get inventory() {
@@ -30,19 +37,12 @@ export class InventoryItemFormComponent implements MModalResult, OnInit {
     this.buildEditForm();
   }
 
-  @Output() onResult: EventEmitter<InventoryItem> = new EventEmitter<InventoryItem>();
-  inventoryForm: FormGroup;
-  passwordConfirmation: FormControl;
-
   get isEditMode() {
     return typeof this.inventory.id == "number";
   }
 
   get form() {
     return this.inventoryForm.controls;
-  }
-
-  constructor(private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {

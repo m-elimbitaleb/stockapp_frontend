@@ -1,5 +1,4 @@
-﻿
-export class InventoryItem {
+﻿export class InventoryItem {
   id: number;
   name: string;
   manufacturer: string;

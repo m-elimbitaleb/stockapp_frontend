@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ToastrService} from 'ngx-toastr';
-import {UserService} from "../../services/user.service";
 
 @Component({
   templateUrl: 'login.component.html',
@@ -16,6 +15,8 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
 
   adminExists: boolean = undefined;
+  adminPasswordControl = new FormControl("", [Validators.required,
+    Validators.minLength(8)]);
 
   constructor(
     private toastr: ToastrService,
@@ -29,9 +30,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
-
-  adminPasswordControl = new FormControl("", [Validators.required,
-    Validators.minLength(8)]);
 
   // convenience getter for easy access to form fields
   get f() {

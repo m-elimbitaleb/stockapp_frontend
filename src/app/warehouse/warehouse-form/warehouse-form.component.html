@@ -17,10 +17,10 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Name</label>
-          <input type="text" class="form-control"
-                 formControlName="name"
-                 placeholder="Name">
-          <small class="text-danger" *ngIf="form['name'].dirty && form['name'].errors">
+          <input class="form-control" formControlName="name"
+                 placeholder="Name"
+                 type="text">
+          <small *ngIf="form['name'].dirty && form['name'].errors" class="text-danger">
             Name is mandatory
           </small>
         </div>
@@ -28,17 +28,17 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Location</label>
-          <input type="text" class="form-control"
-                 formControlName="location"
-                 placeholder="Location: latitude, longitude">
-          <small class="text-danger" *ngIf="form['location'].dirty && form['location'].errors">
+          <input class="form-control" formControlName="location"
+                 placeholder="Location: latitude, longitude"
+                 type="text">
+          <small *ngIf="form['location'].dirty && form['location'].errors" class="text-danger">
             Location is mandatory
           </small>
         </div>
       </div>
     </div>
     <div class="d-flex justify-content-end">
-      <input type="reset" class="btn btn-secondary" value="Cancel" (click)="onCancel()"/>
+      <input (click)="onCancel()" class="btn btn-secondary" type="reset" value="Cancel"/>
       <button
         (click)="onSubmit()"
         [disabled]="warehouseForm.invalid"

@@ -18,6 +18,13 @@ import {Warehouse} from "../../model/warehouse";
 
 })
 export class WarehouseFormComponent implements MModalResult, OnInit {
+  @Output() onResult: EventEmitter<Warehouse> = new EventEmitter<Warehouse>();
+  warehouseForm: FormGroup;
+  passwordConfirmation: FormControl;
+
+  constructor(private formBuilder: FormBuilder) {
+  }
+
   private _warehouse: Warehouse = new Warehouse();
 
   get warehouse() {
@@ -29,19 +36,12 @@ export class WarehouseFormComponent implements MModalResult, OnInit {
     this.buildEditForm();
   }
 
-  @Output() onResult: EventEmitter<Warehouse> = new EventEmitter<Warehouse>();
-  warehouseForm: FormGroup;
-  passwordConfirmation: FormControl;
-
   get isEditMode() {
     return typeof this.warehouse.id == "number";
   }
 
   get form() {
     return this.warehouseForm.controls;
-  }
-
-  constructor(private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {

@@ -6,8 +6,7 @@
  *
  */
 
-import {Component, EventEmitter, Input} from "@angular/core";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {Component, EventEmitter} from "@angular/core";
 
 @Component({
   selector: "m-modal",

@@ -16,10 +16,10 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Reference</label>
-          <input type="text" class="form-control"
-                 formControlName="reference"
-                 placeholder="Reference">
-          <small class="text-danger" *ngIf="form['reference'].dirty && form['reference'].errors">
+          <input class="form-control" formControlName="reference"
+                 placeholder="Reference"
+                 type="text">
+          <small *ngIf="form['reference'].dirty && form['reference'].errors" class="text-danger">
             Reference is mandatory
           </small>
         </div>
@@ -27,10 +27,10 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Shipper</label>
-          <input type="text" class="form-control"
-                 formControlName="shipper"
-                 placeholder="Shipper">
-          <small class="text-danger" *ngIf="form['shipper'].dirty && form['shipper'].errors">
+          <input class="form-control" formControlName="shipper"
+                 placeholder="Shipper"
+                 type="text">
+          <small *ngIf="form['shipper'].dirty && form['shipper'].errors" class="text-danger">
             Shipper is mandatory
           </small>
         </div>
@@ -39,17 +39,17 @@
     <div>
       <span class="title mb-3 mt-2">Select items to be shipped</span>
       <ag-grid-angular
+        (gridReady)="onGridReady($event)"
         [columnDefs]="gridOptions.columnDefs"
         [frameworkComponents]="frameworkComponents"
         [gridOptions]="gridOptions"
         [localeText]="localeText"
-        (gridReady)="onGridReady($event)"
         [rowData]="rowData"
         class="ag-theme-alpine">
       </ag-grid-angular>
     </div>
     <div class="d-flex justify-content-end">
-      <input type="reset" class="btn btn-secondary" value="Cancel" (click)="onCancel()"/>
+      <input (click)="onCancel()" class="btn btn-secondary" type="reset" value="Cancel"/>
       <button
         (click)="onSubmit()"
         [disabled]="shipmentForm.invalid"

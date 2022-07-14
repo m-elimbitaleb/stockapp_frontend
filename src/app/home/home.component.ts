@@ -1,6 +1,6 @@
 ﻿import {Component} from '@angular/core';
 import {AuthenticationService} from "../services/authentication.service";
-import {RoleEnum, Token} from "../model/user";
+import {RoleEnum} from "../model/user";
 import {Router} from "@angular/router";
 
 

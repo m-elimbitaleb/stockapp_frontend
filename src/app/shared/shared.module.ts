@@ -9,12 +9,12 @@ import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        RouterModule,
-        NgxIntlTelInputModule
-    ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    NgxIntlTelInputModule
+  ],
   declarations: [HeaderComponent, MModalComponent, MConfirmModal],
   exports: [HeaderComponent, MModalComponent, MConfirmModal],
 })

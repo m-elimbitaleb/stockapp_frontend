@@ -12,7 +12,7 @@ import {
 } from "../../shared/ag-grid-actions-buttons/ag-grid-actions-buttons.component";
 import {HeaderButton} from "../../shared/components/header.component";
 import {MModalComponent} from "../../shared/components/m-modal/m-modal.component";
-import {Toast, ToastrService} from "ngx-toastr";
+import {ToastrService} from "ngx-toastr";
 import {MConfirmModal} from "../../shared/components/m-confirm-modal";
 import {Warehouse} from "../../model/warehouse";
 import {WarehouseService} from "../../services/warehouse.service";
@@ -23,9 +23,6 @@ import {WarehouseService} from "../../services/warehouse.service";
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
-  @ViewChild(MModalComponent)
-  private modal;
-
   gridOptions: GridOptions;
   frameworkComponents: any;
   rowData = [];
@@ -33,7 +30,6 @@ export class UserComponent implements OnInit {
   users: any[] = [];
   localeText: any;
   gridApi: GridApi;
-  private columnApi: ColumnApi;
   actionButtons = [
     {
       text: "Add",
@@ -45,12 +41,10 @@ export class UserComponent implements OnInit {
   ] as HeaderButton[];
   editableUser: User = new User();
   warehouses: string[];
+  @ViewChild(MModalComponent)
+  private modal;
+  private columnApi: ColumnApi;
 
-  private fetchWarehouses() {
-      this.warehouseService.getAll().subscribe((it: Warehouse[]) => {
-        this.warehouses = it.map(it => it.name);
-      })
-  }
   constructor(private authenticationService: AuthenticationService,
               private toastr: ToastrService, private warehouseService: WarehouseService,
               private datepipe: DatePipe, private modalService: NgbModal,
@@ -165,6 +159,27 @@ export class UserComponent implements OnInit {
     this.loadAllUsers();
   }
 
+  onUserInput(user: User) {
+    this.modal.hide();
+    if (!user) {
+      return;
+    }
+    const action = typeof user.id == "number" ? "update" : "save";
+    this.userService[action](user).subscribe(
+      res => {
+        this.loadAllUsers();
+        this.toastr.success("Operation successful");
+      },
+      err => this.toastr.error(err));
+
+  }
+
+  private fetchWarehouses() {
+    this.warehouseService.getAll().subscribe((it: Warehouse[]) => {
+      this.warehouses = it.map(it => it.name);
+    })
+  }
+
   private loadAllUsers() {
     this.userService.getAll()
       .subscribe(users => {
@@ -214,20 +229,5 @@ export class UserComponent implements OnInit {
   private editUser(user) {
     this.editableUser = {...user}
     this.modal.show();
-  }
-
-  onUserInput(user: User) {
-    this.modal.hide();
-    if (!user) {
-      return;
-    }
-    const action = typeof user.id == "number" ? "update" : "save";
-    this.userService[action](user).subscribe(
-      res => {
-        this.loadAllUsers();
-        this.toastr.success("Operation successful");
-      },
-      err => this.toastr.error(err));
-
   }
 }

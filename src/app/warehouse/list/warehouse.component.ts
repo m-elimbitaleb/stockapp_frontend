@@ -14,7 +14,6 @@ import {ToastrService} from "ngx-toastr";
 import {RoleEnum} from "../../model/user";
 import {Warehouse} from "../../model/warehouse";
 import {WarehouseService} from "../../services/warehouse.service";
-import {location} from "ngx-bootstrap/utils/facade/browser";
 
 @Component({
   selector: 'app-warehouse',
@@ -22,15 +21,11 @@ import {location} from "ngx-bootstrap/utils/facade/browser";
   styleUrls: ['./warehouse.component.scss'],
 })
 export class WarehouseListComponent implements OnInit {
-  @ViewChild(MModalComponent)
-  private modal;
-
   gridOptions: GridOptions;
   frameworkComponents: any;
   rowData = [];
   localeText: any;
   gridApi: GridApi;
-  private columnApi: ColumnApi;
   actionButtons = [
     {
       text: "Add",
@@ -41,6 +36,9 @@ export class WarehouseListComponent implements OnInit {
     }
   ] as HeaderButton[];
   editableWarehouseItem: Warehouse = new Warehouse();
+  @ViewChild(MModalComponent)
+  private modal;
+  private columnApi: ColumnApi;
 
   constructor(private authenticationService: AuthenticationService,
               private toastr: ToastrService,
@@ -127,6 +125,20 @@ export class WarehouseListComponent implements OnInit {
     this.loadAllWarehouses();
   }
 
+  onWarehouseInput(warehouse: Warehouse) {
+    this.modal.hide();
+    if (!warehouse) {
+      return;
+    }
+    this.warehouseService.save(warehouse).subscribe(
+      res => {
+        this.loadAllWarehouses();
+        this.toastr.success("Operation successful");
+      },
+      err => this.toastr.error(err));
+
+  }
+
   private loadAllWarehouses() {
     this.warehouseService.getAll()
       .subscribe(warehouses => {
@@ -142,19 +154,5 @@ export class WarehouseListComponent implements OnInit {
   private editWarehouse(warehouse) {
     this.editableWarehouseItem = {...warehouse}
     this.modal.show();
-  }
-
-  onWarehouseInput(warehouse: Warehouse) {
-    this.modal.hide();
-    if (!warehouse) {
-      return;
-    }
-    this.warehouseService.save(warehouse).subscribe(
-      res => {
-        this.loadAllWarehouses();
-        this.toastr.success("Operation successful");
-      },
-      err => this.toastr.error(err));
-
   }
 }
